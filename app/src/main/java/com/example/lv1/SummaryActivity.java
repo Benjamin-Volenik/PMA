@@ -16,9 +16,9 @@ public class SummaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_summary);
 
         Button button = (Button)findViewById(R.id.btnSpremi);
-        TextView txtView = (TextView)findViewById(R.id.textView);
-        TextView txtView1 = (TextView)findViewById(R.id.textView1);
-        TextView txtView2 = (TextView)findViewById(R.id.textView2);
+        TextView txtView = (TextView)findViewById(R.id.textView1);
+        TextView txtView1 = (TextView)findViewById(R.id.textView2);
+        TextView txtView2 = (TextView)findViewById(R.id.textView);
         TextView txtView3 = (TextView)findViewById(R.id.textView3);
         TextView txtView4 = (TextView)findViewById(R.id.textView4);
         TextView txtView5 = (TextView)findViewById(R.id.textView5);
@@ -28,7 +28,7 @@ public class SummaryActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =(new Intent(SummaryActivity.this,PersonalInfoActivity.class));
+                Intent i =(new Intent(SummaryActivity.this,StartActivity.class));
                 i.setFlags(getIntent().FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
