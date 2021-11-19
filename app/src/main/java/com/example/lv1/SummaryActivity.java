@@ -25,15 +25,6 @@ public class SummaryActivity extends AppCompatActivity {
         TextView txtView6 = (TextView)findViewById(R.id.textView6);
         TextView txtView7 = (TextView)findViewById(R.id.textView7);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i =(new Intent(SummaryActivity.this,StartActivity.class));
-                i.setFlags(getIntent().FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-            }
-        });
-
         Bundle extras = getIntent().getExtras();
         if(extras != null)
         {
@@ -46,5 +37,22 @@ public class SummaryActivity extends AppCompatActivity {
             txtView6.setText(extras.getString("BrojSati"));
             txtView7.setText(extras.getString("BrojSatiLv"));
         }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =(new Intent(SummaryActivity.this,StartActivity.class));
+                i.setFlags(getIntent().FLAG_ACTIVITY_CLEAR_TOP);
+                Student newStudent = new Student(
+                        extras.getString("Ime"),
+                        extras.getString("Prezime"),
+                        extras.getString("Predmet"));
+                StudentList studentList = com.example.lv1.StudentList.getInstance();
+                studentList.AddStudent(newStudent);
+                i.putExtra("student", newStudent);
+                startActivity(i);
+            }
+        });
+
     }
 }
