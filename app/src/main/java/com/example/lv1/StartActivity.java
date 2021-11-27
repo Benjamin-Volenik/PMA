@@ -46,7 +46,7 @@ public class StartActivity extends AppCompatActivity implements Serializable {
         btnDalje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(StartActivity.this, PersonalInfoActivity.class));
+                startActivity(new Intent(StartActivity.this, CreateNewRecordActivity.class));
             }
         });
     }
