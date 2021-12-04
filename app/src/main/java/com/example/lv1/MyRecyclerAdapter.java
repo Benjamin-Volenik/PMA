@@ -41,7 +41,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         else if(dataList.get(position) instanceof Student) {
             StudentViewHolder studViewHolder = (StudentViewHolder) viewHolder;
             studViewHolder.tvHolderIme.setText(((Student) dataList.get(position)).VratiImePrezime());
-            studViewHolder.tvHolderPredmet.setText(((Student) dataList.get(position)).Predmet);
+            studViewHolder.tvHolderPredmet.setText(((Student) dataList.get(position)).Predmet.title);
         }
     }
     @Override

@@ -31,6 +31,7 @@ public class SummaryFragment extends Fragment implements FragmentObserver{
     TextView txtIme, txtPrezime, txtDatum, txtGodina, txtPredmet, txtSatiPredavanja, txtSatiLV, txtProfesor;
     ImageView imageViewProfilnaSlika;
     Button btnSpremi;
+    View view;
 
     public FragmentListener fragmentListener;
 
@@ -69,7 +70,7 @@ public class SummaryFragment extends Fragment implements FragmentObserver{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_summary, container, false);
+        view = inflater.inflate(R.layout.fragment_summary, container, false);
 
         txtIme = view.findViewById(R.id.textView1);
         txtPrezime = view.findViewById(R.id.textView2);
@@ -106,15 +107,15 @@ public class SummaryFragment extends Fragment implements FragmentObserver{
     @Override
     public void updateValues(){
 
-        if(fragmentListener != null) {
+        if(fragmentListener != null && view != null) {
             txtIme.setText(fragmentListener.getIme());
             txtPrezime.setText(fragmentListener.getPrezime());
             txtDatum.setText(fragmentListener.getDatum());
             txtGodina.setText(fragmentListener.getGodina());
-            txtPredmet.setText(fragmentListener.getPredmet());
+            txtPredmet.setText(fragmentListener.getPredmet().title);
             txtSatiPredavanja.setText(fragmentListener.getSatiPredavanja());
             txtSatiLV.setText(fragmentListener.getSatiLV());
-            txtProfesor.setText(fragmentListener.getProfesor());
+            txtProfesor.setText(fragmentListener.getProfesor().name);
             imageViewProfilnaSlika.setImageBitmap(fragmentListener.getProfilna());
         }
     }

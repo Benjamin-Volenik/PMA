@@ -10,7 +10,7 @@ public class APIMenager {
     private APIMenager(){
         Retrofit.Builder builder = new Retrofit.Builder();
         //postavljanje retrofit-a
-        Retrofit retrofit = builder.baseUrl("http://api.dataatwork.org")
+        Retrofit retrofit = builder.baseUrl("https://catalog-api.udacity.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(CourseAPIService.class);
@@ -22,6 +22,7 @@ public class APIMenager {
         return instance;
     }
     public CourseAPIService service(){
+
         return service;
     }
 }

@@ -9,15 +9,24 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link StudentInfoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StudentInfoFragment extends Fragment {
+public class StudentInfoFragment extends Fragment implements Callback<CourseResponse> {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,8 +38,10 @@ public class StudentInfoFragment extends Fragment {
     private String mParam2;
 
     public FragmentListener fragmentListener;
+    View view;
+    EditText inputGodina, inputSatiPredavanja, inputSatiLv;
 
-    EditText inputPredmet, inputProfesor, inputGodina, inputSatiPredavanja, inputSatiLv;
+    ArrayList<CourseModel> courses = new ArrayList<>();
 
     public StudentInfoFragment() {
         // Required empty public constructor
@@ -57,57 +68,18 @@ public class StudentInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        APIMenager.getInstance().service().getCourses().enqueue(this); //asinkroni poziv
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_student_info, container, false);
+        view = inflater.inflate(R.layout.fragment_student_info, container, false);
 
-        inputPredmet = view.findViewById(R.id.textInputLayout);
-        inputProfesor = view.findViewById(R.id.textInputLayout2);
         inputGodina = view.findViewById(R.id.textInputLayout3);
         inputSatiPredavanja = view.findViewById(R.id.textInputLayout4);
         inputSatiLv = view.findViewById(R.id.textInputLayout5);
-
-        inputPredmet.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                fragmentListener.setPredmet(inputPredmet.getText().toString());
-            }
-        });
-
-        inputProfesor.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                fragmentListener.setProfesor(inputProfesor.getText().toString());
-            }
-        });
 
         inputGodina.addTextChangedListener(new TextWatcher() {
             @Override
@@ -161,5 +133,58 @@ public class StudentInfoFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    @Override
+    public void onResponse(Call<CourseResponse> call, Response<CourseResponse> response) {
+        if (response.isSuccessful() && response.body() != null){
+            for(CourseModel course : response.body().courses)
+            {
+                if(course.instructors != null)
+                {
+                    courses.add(course);
+                }
+            }
+        }
+        PredmetSpinnerAdapter predmetSpinnerAdapter = new PredmetSpinnerAdapter(getActivity(),
+                android.R.layout.simple_spinner_item, courses);
+        Spinner mySpinner = (Spinner) view.findViewById(R.id.PredmetSpinner);
+        mySpinner.setAdapter(predmetSpinnerAdapter);
+        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+                public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+                    fragmentListener.setPredmet(courses.get(position));
+
+                    ProffesorSpinnerAdapter profesorSpinnerAdapter = new ProffesorSpinnerAdapter(getActivity(),
+                            android.R.layout.simple_spinner_item,
+                            fragmentListener.getPredmet().instructors);
+                    Spinner profesorSpinner = (Spinner) view.findViewById(R.id.ProfesorSpinner);
+                    profesorSpinner.setAdapter(profesorSpinnerAdapter);
+
+                    profesorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
+                            fragmentListener.setProfesor(fragmentListener.getPredmet().instructors.get(position));
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+    }
+
+    @Override
+    public void onFailure(Call<CourseResponse> call, Throwable t) {
+        t.printStackTrace();
     }
 }

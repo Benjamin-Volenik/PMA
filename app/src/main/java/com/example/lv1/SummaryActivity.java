@@ -38,7 +38,7 @@ public class SummaryActivity extends AppCompatActivity {
             txtView7.setText(extras.getString("BrojSatiLv"));
         }
 
-        button.setOnClickListener(new View.OnClickListener() {
+       /* button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i =(new Intent(SummaryActivity.this,StartActivity.class));
@@ -52,7 +52,7 @@ public class SummaryActivity extends AppCompatActivity {
                 i.putExtra("student", newStudent);
                 startActivity(i);
             }
-        });
+        });*/
 
     }
 }

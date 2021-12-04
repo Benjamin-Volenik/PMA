@@ -8,16 +8,16 @@ public class Student implements Serializable {
 
         public String Ime;
         public String Prezime;
-        public String Predmet;
+        public CourseModel Predmet;
 
         public String Datum;
         public String Godina;
         public String SatiPredavanja;
         public String SatiLV;
-        public String Profesor;
+        public Instructor Profesor;
         public Bitmap Profilna;
 
-        public Student(String Ime, String Prezime, String Predmet)
+        public Student(String Ime, String Prezime, CourseModel Predmet)
         {
             this.Ime = Ime;
             this.Prezime = Prezime;
